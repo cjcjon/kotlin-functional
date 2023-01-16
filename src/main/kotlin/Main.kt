@@ -1,11 +1,8 @@
-import chapter3.Binary
-import chapter3.Maximum
-import chapter3.Replicate
-import chapter3.Reverse
+import chapter3.Elem
+import chapter3.Take
 
 fun main() {
-  println(Maximum.recursion(listOf(1, 3, 2, 8, 4)))
-  println(Reverse.recursion("abcd"))
-  println(Binary.recursion(5))
-  println(Replicate.recursion(3, 5))
+  println(Take.recursion(3, listOf(1, 2, 3, 4, 5)))
+  println(Elem.recursion(3, listOf(1, 2, 3, 4)))
+  println(Elem.recursion(0, listOf(1, 2)))
 }

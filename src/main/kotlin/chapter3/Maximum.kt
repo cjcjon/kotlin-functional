@@ -1,9 +1,9 @@
 package chapter3
 
-object Maximum {
-  fun List<Int>.head() = first()
-  fun List<Int>.tail() = drop(1)
+import chapter3.ListUtil.head
+import chapter3.ListUtil.tail
 
+object Maximum {
   fun recursion(items: List<Int>): Int = when {
     items.isEmpty() -> error("empty list")
     1 == items.size -> items.head()
