@@ -1,7 +1,10 @@
-fun main(args: Array<String>) {
-    println("Hello World!")
+import chapter3.Factorial
+import chapter3.Fibonacci
+import chapter3.Power
 
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
-    println("Program arguments: ${args.joinToString()}")
+fun main() {
+  println(Fibonacci.dynamic(10, IntArray(100)))
+  println(Fibonacci.recursion(10))
+  println(Power.recursion(3.0, 3))
+  println(Factorial.recursion(5))
 }
