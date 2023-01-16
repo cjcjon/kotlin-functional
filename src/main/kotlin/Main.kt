@@ -1,8 +1,5 @@
-import chapter3.Elem
-import chapter3.Take
+import chapter3.MySequence
 
 fun main() {
-  println(Take.recursion(3, listOf(1, 2, 3, 4, 5)))
-  println(Elem.recursion(3, listOf(1, 2, 3, 4)))
-  println(Elem.recursion(0, listOf(1, 2)))
+  println(MySequence.takeSequence(5, MySequence.repeat(3)))
 }
