@@ -1,10 +1,11 @@
-import chapter3.Factorial
-import chapter3.Fibonacci
-import chapter3.Power
+import chapter3.Binary
+import chapter3.Maximum
+import chapter3.Replicate
+import chapter3.Reverse
 
 fun main() {
-  println(Fibonacci.dynamic(10, IntArray(100)))
-  println(Fibonacci.recursion(10))
-  println(Power.recursion(3.0, 3))
-  println(Factorial.recursion(5))
+  println(Maximum.recursion(listOf(1, 3, 2, 8, 4)))
+  println(Reverse.recursion("abcd"))
+  println(Binary.recursion(5))
+  println(Replicate.recursion(3, 5))
 }
