@@ -19,5 +19,13 @@ object Fibonacci {
     else -> recursion(n - 1) + recursion(n - 2)
   }
 
+  fun recursionMemoize(n: Int): Int = run {
+    tailrec fun inner(n: Int, first: Int, second: Int): Int = when (n) {
+      0 -> first
+      1 -> second
+      else -> inner(n - 1, second, first + second)
+    }
 
+    inner(n, 0, 1)
+  }
 }
