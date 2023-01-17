@@ -1,11 +1,6 @@
-import chapter3.Binary
-import chapter3.Maximum
-import chapter3.Replicate
-import chapter3.Reverse
+import chapter3.*
 
 fun main() {
-  println(Maximum.tailrecMaximum(listOf(1, 2, 10, 5, 7, 3)))
-  println(Reverse.tailrecRecursion("abcde"))
-  println(Binary.tailrecRecursion(3))
-  println(Replicate.tailrecRecursion(3, 5))
+  println(Take.tailrecRecursion(3, listOf(1, 2, 3, 4, 5)))
+  println(Elem.tailrecRecursion(3, listOf(1, 2, 3, 4)))
 }
