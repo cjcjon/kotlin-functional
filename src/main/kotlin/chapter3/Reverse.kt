@@ -8,4 +8,12 @@ object Reverse {
     str.isEmpty() -> ""
     else -> recursion(str.tail()) + str.head()
   }
+
+  tailrec fun tailrecRecursion(str: String, acc: String = ""): String = when {
+    str.isEmpty() -> acc
+    else -> {
+      val reversed = str.head() + acc
+      tailrecRecursion(str.tail(), reversed)
+    }
+  }
 }
