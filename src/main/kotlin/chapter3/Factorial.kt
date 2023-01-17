@@ -14,4 +14,16 @@ object Factorial {
 
     inner(n, 1)
   }
+
+  fun trampoline(n: Int) = trampoline(multiply(n, 1))
+
+  private fun minusOne(n: Int, acc: Int): Bounce<Int> = when (n) {
+    0, 1 -> Done(acc)
+    else -> More { multiply(n - 1, acc) }
+  }
+
+  private fun multiply(n: Int, acc: Int): Bounce<Int> = when (n) {
+    0, 1 -> Done(acc)
+    else -> More { minusOne(n, acc * n) }
+  }
 }

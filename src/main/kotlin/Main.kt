@@ -1,6 +1,7 @@
 import chapter3.*
 
 fun main() {
-  println(Take.tailrecRecursion(3, listOf(1, 2, 3, 4, 5)))
-  println(Elem.tailrecRecursion(3, listOf(1, 2, 3, 4)))
+  println(trampoline(EvenOdd.even(999999)))
+  println(trampoline(EvenOdd.odd(999999)))
+  println(Factorial.trampoline(10))
 }
