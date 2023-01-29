@@ -89,6 +89,10 @@ fun toUpper(list: FunList<Char>): FunList<Char> = list.foldLeft(FunList.Nil) {
   acc: FunList<Char>, char: Char -> acc.appendTail(char.uppercaseChar())
 }
 
+fun <T, R> FunList<T>.mapByFoldLeft(f: (T) -> R): FunList<R> = foldLeft(FunList.Nil) {
+  acc: FunList<R>, x -> acc.appendTail(f(x))
+}
+
 fun main() {
   val intList = funListOf(1, 2, 3)
 
