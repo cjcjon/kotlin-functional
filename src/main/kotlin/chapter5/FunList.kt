@@ -101,8 +101,13 @@ fun <T> FunList<T>.filterByFoldLeft(p: (T) -> Boolean): FunList<T> = foldLeft(Fu
   acc: FunList<T>, x -> if (p(x)) acc.appendTail(x) else acc
 }
 
-fun main() {
-  val intList = funListOf(1, 4, 2, 3)
+fun <T, R> FunList<T>.foldRight(acc: R, f: (T, R) -> R): R = when (this) {
+  is FunList.Nil -> acc
+  is FunList.Cons -> f(head, tail.foldRight(acc, f))
+}
 
-  println("[${intList.filterByFoldLeft { it > 2 }.mkString()}]")
+fun main() {
+  val intList = funListOf(1, 3, 10)
+
+  println(intList.foldRight(0) { x, acc -> x - acc })
 }
