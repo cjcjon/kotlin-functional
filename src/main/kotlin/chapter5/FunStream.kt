@@ -48,7 +48,11 @@ fun <T> FunStream<T>.filter(p: (T) -> Boolean): FunStream<T> = when {
   else -> FunStream.Nil
 }
 
+fun <T, R> FunStream<T>.map(f: (T) -> R): FunStream<R> = when (this) {
+  is FunStream.Nil -> FunStream.Nil
+  is FunStream.Cons -> FunStream.Cons({ f(head()) }, { tail().map(f) })
+}
+
 fun main() {
-  println(funStreamOf(1, 2, 3).filter { it % 2 == 0 }.sum())
-  println(funStreamOf(1, 2, 3, 4, 5).filter { it % 2 == 0 } == funStreamOf(2, 4))
+  println(funStreamOf(1, 2, 3).map { it * 2 } == funStreamOf(2, 4, 6))
 }
