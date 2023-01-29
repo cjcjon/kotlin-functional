@@ -63,8 +63,14 @@ tailrec fun <T> FunList<T>.take(n: Int, acc: FunList<T> = FunList.Nil): FunList<
   else -> acc.reverse()
 }
 
+tailrec fun <T> FunList<T>.takeWhile(acc: FunList<T> = FunList.Nil, p: (T) -> Boolean): FunList<T> = when {
+  this is FunList.Cons && p(head) -> tail.takeWhile(acc.addHead(head), p)
+  else -> acc.reverse()
+}
+
 fun main() {
   val list = FunList.Cons(1, FunList.Cons(2, FunList.Cons(3, FunList.Cons(4, FunList.Nil))))
 
-  println("[${list.take(2).mkString()}]")
+  println("[${list.takeWhile() { it < 3 }.mkString()}]")
+  println("${listOf(1, 2, 3, 4).takeWhile { it < 3 }}")
 }
