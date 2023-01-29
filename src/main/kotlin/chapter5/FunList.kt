@@ -78,8 +78,15 @@ tailrec fun <T, R> FunList<T>.indexedMap(index: Int = 0, acc: FunList<R> = FunLi
   is FunList.Cons -> tail.indexedMap(index + 1, acc.addHead(f(index, head)), f)
 }
 
+tailrec fun <T, R> FunList<T>.foldLeft(acc: R, f: (R, T) -> R): R = when (this) {
+  is FunList.Nil -> acc
+  is FunList.Cons -> tail.foldLeft(f(acc, head), f)
+}
+
+fun FunList<Int>.sum(): Int = foldLeft(0) { acc, x -> acc + x }
+
 fun main() {
   val intList = funListOf(1, 2, 3)
 
-  println("[${intList.indexedMap { index, value -> index + value }.mkString()}]")
+  println(intList.foldLeft(0) { acc, x -> acc + x })
 }
