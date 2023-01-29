@@ -134,12 +134,13 @@ tailrec fun <T1, T2, R> FunList<T1>.zipWith(
   else -> getTail().zipWith(f, other.getTail(), acc.addHead(f(getHead(), other.getHead())))
 }
 
-fun main() {
-  val intList1 = funListOf(1, 2, 3)
-  val intList2 = funListOf(1, 3, 10)
-  val lowerCharList = funListOf('a', 'b', 'c')
+fun <T, R> FunList<T>.associate(f: (T) -> Pair<T, R>): Map<T, R> = foldLeft(mapOf()) {
+  acc: Map<T, R>, x -> acc.plus(f(x))
+}
 
-  println("[${intList1.zipWith({ x, y -> x + y }, intList2).mkString()}]")
-  println("[${intList1.zipWith({ x, y -> if (x > y) x else y }, intList2).mkString()}]")
-  println("[${intList1.zipWith({ x, y -> x to y }, lowerCharList).mkString()}]")
+
+fun main() {
+  val intList = funListOf(1, 2, 3)
+
+  println("[${intList.associate { x -> x to x.toString() }}]")
 }
