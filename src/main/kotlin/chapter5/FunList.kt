@@ -147,9 +147,12 @@ tailrec fun <T> FunList<T>.toString(acc: String): String = when (this) {
   is FunList.Cons -> tail.toString("${acc}, ${head.toString()}")
 }
 
+fun <T> FunList<T>.toStringByFoldLeft(): String =
+  "[${foldLeft("") { acc, x -> "$acc, $x" }.drop(2)}]"
+
 fun main() {
   val intList = funListOf(1, 2, 3, 2)
 
   println(intList.toString("") == "[1, 2, 3, 2]")
-  println(FunList.Nil.toString("") == "[]")
+  println(intList.toStringByFoldLeft() == "[1, 2, 3, 2]")
 }
