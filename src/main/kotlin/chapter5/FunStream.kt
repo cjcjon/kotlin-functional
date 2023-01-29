@@ -26,6 +26,11 @@ fun FunStream<Int>.product(): Int = when (this) {
   is FunStream.Cons -> head() * tail().product()
 }
 
+fun <T> FunStream<T>.appendTail(value: T): FunStream<T> = when (this) {
+  is FunStream.Nil -> FunStream.Cons({ value }, { FunStream.Nil })
+  is FunStream.Cons -> FunStream.Cons(head) { tail().appendTail(value) }
+}
+
 fun main() {
   println(funStreamOf(1, 2, 3, 4).product())
 }
