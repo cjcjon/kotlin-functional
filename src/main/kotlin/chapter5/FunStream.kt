@@ -40,6 +40,15 @@ fun <T> FunStream<T>.appendTail(value: T): FunStream<T> = when (this) {
   is FunStream.Cons -> FunStream.Cons(head) { tail().appendTail(value) }
 }
 
+fun <T> FunStream<T>.filter(p: (T) -> Boolean): FunStream<T> = when {
+  this is FunStream.Cons ->
+    if (p(head())) FunStream.Cons(head) { tail().filter(p) }
+    else tail().filter(p)
+
+  else -> FunStream.Nil
+}
+
 fun main() {
-  println(funStreamOf(1, 2, 3, 4).product())
+  println(funStreamOf(1, 2, 3).filter { it % 2 == 0 }.sum())
+  println(funStreamOf(1, 2, 3, 4, 5).filter { it % 2 == 0 } == funStreamOf(2, 4))
 }
