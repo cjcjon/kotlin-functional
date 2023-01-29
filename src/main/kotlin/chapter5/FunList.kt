@@ -68,9 +68,18 @@ tailrec fun <T> FunList<T>.takeWhile(acc: FunList<T> = FunList.Nil, p: (T) -> Bo
   else -> acc.reverse()
 }
 
-fun main() {
-  val list = FunList.Cons(1, FunList.Cons(2, FunList.Cons(3, FunList.Cons(4, FunList.Nil))))
+tailrec fun <T, R> FunList<T>.map(acc: FunList<R> = FunList.Nil, f: (T) -> R): FunList<R> = when (this) {
+  is FunList.Nil -> acc.reverse()
+  is FunList.Cons -> tail.map(acc.addHead(f(head)), f)
+}
 
-  println("[${list.takeWhile() { it < 3 }.mkString()}]")
-  println("${listOf(1, 2, 3, 4).takeWhile { it < 3 }}")
+tailrec fun <T, R> FunList<T>.indexedMap(index: Int = 0, acc: FunList<R> = FunList.Nil, f: (Int, T) -> R): FunList<R> = when (this) {
+  is FunList.Nil -> acc.reverse()
+  is FunList.Cons -> tail.indexedMap(index + 1, acc.addHead(f(index, head)), f)
+}
+
+fun main() {
+  val intList = funListOf(1, 2, 3)
+
+  println("[${intList.indexedMap { index, value -> index + value }.mkString()}]")
 }
