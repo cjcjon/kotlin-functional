@@ -97,8 +97,12 @@ fun FunList<Int>.maximumByFoldLeft(): Int = foldLeft(0) {
   acc, x -> if (x > acc) x else acc
 }
 
+fun <T> FunList<T>.filterByFoldLeft(p: (T) -> Boolean): FunList<T> = foldLeft(FunList.Nil) {
+  acc: FunList<T>, x -> if (p(x)) acc.appendTail(x) else acc
+}
+
 fun main() {
   val intList = funListOf(1, 4, 2, 3)
 
-  println("${intList.maximumByFoldLeft()}")
+  println("[${intList.filterByFoldLeft { it > 2 }.mkString()}]")
 }
