@@ -93,8 +93,12 @@ fun <T, R> FunList<T>.mapByFoldLeft(f: (T) -> R): FunList<R> = foldLeft(FunList.
   acc: FunList<R>, x -> acc.appendTail(f(x))
 }
 
-fun main() {
-  val intList = funListOf(1, 2, 3)
+fun FunList<Int>.maximumByFoldLeft(): Int = foldLeft(0) {
+  acc, x -> if (x > acc) x else acc
+}
 
-  println(intList.foldLeft(0) { acc, x -> acc + x })
+fun main() {
+  val intList = funListOf(1, 4, 2, 3)
+
+  println("${intList.maximumByFoldLeft()}")
 }
