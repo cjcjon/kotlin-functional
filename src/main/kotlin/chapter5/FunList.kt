@@ -110,8 +110,12 @@ fun <T> FunList<T>.reverseByFoldRight(): FunList<T> = foldRight(FunList.Nil) {
   x, acc: FunList<T> -> acc.appendTail(x)
 }
 
+fun <T> FunList<T>.filterByFoldRight(p: (T) -> Boolean) = foldRight(FunList.Nil) {
+  x, acc: FunList<T> -> if (p(x)) acc.addHead(x) else acc
+}
+
 fun main() {
   val intList = funListOf(1, 3, 10)
 
-  println("[${intList.reverseByFoldRight().mkString()}]")
+  println("[${intList.filterByFoldRight { it > 2 }.mkString()}]")
 }
