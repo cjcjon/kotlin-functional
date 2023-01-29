@@ -64,7 +64,11 @@ tailrec fun <T> FunStream<T>.forEach(f: (T) -> Unit): Unit = when (this) {
   }
 }
 
+fun <T> FunStream<T>.take(n: Int): FunStream<T> = when {
+  this is FunStream.Cons && n > 0 -> FunStream.Cons(head) { tail().take(n - 1) }
+  else -> FunStream.Nil
+}
+
 fun main() {
-  val infiniteVal = generateFunStream(0) { it + 5 }
-  // infiniteVal.forEach { println(it) }
+  println(generateFunStream(0) { it + 5 }.take(5) == funStreamOf(0, 5, 10, 15, 20))
 }
