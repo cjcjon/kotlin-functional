@@ -47,8 +47,15 @@ tailrec fun <T> FunList<T>.filter(acc: FunList<T> = FunList.Nil, filterFunc: (T)
     else tail.filter(acc, filterFunc)
 }
 
+tailrec fun <T> FunList<T>.drop(n: Int): FunList<T> = when {
+  n < 1 -> this
+  this is FunList.Cons -> tail.drop(n - 1)
+  else -> FunList.Nil
+}
+
 fun main() {
   val list = FunList.Cons(1, FunList.Cons(2, FunList.Cons(3, FunList.Cons(4, FunList.Nil))))
 
   println("[${list.filter { it % 2 == 0 }.mkString()}]")
+  println("[${list.drop(3).mkString()}]")
 }
