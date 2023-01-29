@@ -118,8 +118,14 @@ fun <T, R> FunList<T>.mapByFoldRight(f: (T) -> R): FunList<R> = foldRight(FunLis
   x, acc: FunList<R> -> acc.addHead(f(x))
 }
 
-fun main() {
-  val intList = funListOf(1, 3, 10)
+tailrec fun <T, R> FunList<T>.zip(other: FunList<R>, acc: FunList<Pair<T, R>> = FunList.Nil): FunList<Pair<T, R>> = when {
+  other is FunList.Nil || this is FunList.Nil -> acc.reverse()
+  else -> this.getTail().zip(other.getTail(), acc.addHead(this.getHead() to other.getHead()))
+}
 
-  println("[${intList.filterByFoldRight { it > 2 }.mkString()}]")
+fun main() {
+  val intList1 = funListOf(1, 3, 10)
+  val intList2 = funListOf(2, 4, 11, 15)
+
+  println("[${intList1.zip(intList2).mkString()}]")
 }
