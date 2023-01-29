@@ -9,7 +9,7 @@ sealed class FunList<out T> {
 fun <T> FunList<T>.mkString(separator: String = ","): String {
   tailrec fun innerAcc(cons: FunList<T>, acc: String): String = when (cons) {
     is FunList.Nil -> acc
-    is FunList.Cons ->  innerAcc(
+    is FunList.Cons -> innerAcc(
       cons.tail,
       if (acc.isEmpty()) cons.head.toString() else "${acc}${separator}${cons.head}"
     )
@@ -20,7 +20,7 @@ fun <T> FunList<T>.mkString(separator: String = ","): String {
 
 fun <T> FunList<T>.addHead(head: T): FunList<T> = FunList.Cons(head, this)
 
-tailrec fun <T> FunList<T>.reverse(acc: FunList<T> = FunList.Nil): FunList<T> = when(this) {
+tailrec fun <T> FunList<T>.reverse(acc: FunList<T> = FunList.Nil): FunList<T> = when (this) {
   is FunList.Nil -> acc
   is FunList.Cons -> tail.reverse(acc.addHead(head))
 }
@@ -40,9 +40,15 @@ fun <T> FunList<T>.getHead(): T = when (this) {
   is FunList.Cons -> head
 }
 
-fun main() {
-  val list = FunList.Cons(1, FunList.Cons(2, FunList.Nil))
+tailrec fun <T> FunList<T>.filter(acc: FunList<T> = FunList.Nil, filterFunc: (T) -> Boolean): FunList<T> = when (this) {
+  is FunList.Nil -> acc.reverse()
+  is FunList.Cons ->
+    if (filterFunc(head)) tail.filter(acc.addHead(head), filterFunc)
+    else tail.filter(acc, filterFunc)
+}
 
-  println("[${list.mkString()}]")
-  println("head: ${list.getHead()}")
+fun main() {
+  val list = FunList.Cons(1, FunList.Cons(2, FunList.Cons(3, FunList.Cons(4, FunList.Nil))))
+
+  println("[${list.filter { it % 2 == 0 }.mkString()}]")
 }
