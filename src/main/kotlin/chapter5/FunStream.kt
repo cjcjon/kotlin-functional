@@ -53,6 +53,9 @@ fun <T, R> FunStream<T>.map(f: (T) -> R): FunStream<R> = when (this) {
   is FunStream.Cons -> FunStream.Cons({ f(head()) }, { tail().map(f) })
 }
 
+fun <T> generateFunStream(seed: T, generate: (T) -> T): FunStream<T> =
+  FunStream.Cons({ seed }, { generateFunStream(generate(seed), generate) })
+
 fun main() {
   println(funStreamOf(1, 2, 3).map { it * 2 } == funStreamOf(2, 4, 6))
 }
