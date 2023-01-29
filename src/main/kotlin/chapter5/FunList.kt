@@ -73,10 +73,11 @@ tailrec fun <T, R> FunList<T>.map(acc: FunList<R> = FunList.Nil, f: (T) -> R): F
   is FunList.Cons -> tail.map(acc.addHead(f(head)), f)
 }
 
-tailrec fun <T, R> FunList<T>.indexedMap(index: Int = 0, acc: FunList<R> = FunList.Nil, f: (Int, T) -> R): FunList<R> = when (this) {
-  is FunList.Nil -> acc.reverse()
-  is FunList.Cons -> tail.indexedMap(index + 1, acc.addHead(f(index, head)), f)
-}
+tailrec fun <T, R> FunList<T>.indexedMap(index: Int = 0, acc: FunList<R> = FunList.Nil, f: (Int, T) -> R): FunList<R> =
+  when (this) {
+    is FunList.Nil -> acc.reverse()
+    is FunList.Cons -> tail.indexedMap(index + 1, acc.addHead(f(index, head)), f)
+  }
 
 tailrec fun <T, R> FunList<T>.foldLeft(acc: R, f: (R, T) -> R): R = when (this) {
   is FunList.Nil -> acc
@@ -85,20 +86,20 @@ tailrec fun <T, R> FunList<T>.foldLeft(acc: R, f: (R, T) -> R): R = when (this) 
 
 fun FunList<Int>.sum(): Int = foldLeft(0) { acc, x -> acc + x }
 
-fun toUpper(list: FunList<Char>): FunList<Char> = list.foldLeft(FunList.Nil) {
-  acc: FunList<Char>, char: Char -> acc.appendTail(char.uppercaseChar())
+fun toUpper(list: FunList<Char>): FunList<Char> = list.foldLeft(FunList.Nil) { acc: FunList<Char>, char: Char ->
+  acc.appendTail(char.uppercaseChar())
 }
 
-fun <T, R> FunList<T>.mapByFoldLeft(f: (T) -> R): FunList<R> = foldLeft(FunList.Nil) {
-  acc: FunList<R>, x -> acc.appendTail(f(x))
+fun <T, R> FunList<T>.mapByFoldLeft(f: (T) -> R): FunList<R> = foldLeft(FunList.Nil) { acc: FunList<R>, x ->
+  acc.appendTail(f(x))
 }
 
-fun FunList<Int>.maximumByFoldLeft(): Int = foldLeft(0) {
-  acc, x -> if (x > acc) x else acc
+fun FunList<Int>.maximumByFoldLeft(): Int = foldLeft(0) { acc, x ->
+  if (x > acc) x else acc
 }
 
-fun <T> FunList<T>.filterByFoldLeft(p: (T) -> Boolean): FunList<T> = foldLeft(FunList.Nil) {
-  acc: FunList<T>, x -> if (p(x)) acc.appendTail(x) else acc
+fun <T> FunList<T>.filterByFoldLeft(p: (T) -> Boolean): FunList<T> = foldLeft(FunList.Nil) { acc: FunList<T>, x ->
+  if (p(x)) acc.appendTail(x) else acc
 }
 
 fun <T, R> FunList<T>.foldRight(acc: R, f: (T, R) -> R): R = when (this) {
@@ -106,26 +107,39 @@ fun <T, R> FunList<T>.foldRight(acc: R, f: (T, R) -> R): R = when (this) {
   is FunList.Cons -> f(head, tail.foldRight(acc, f))
 }
 
-fun <T> FunList<T>.reverseByFoldRight(): FunList<T> = foldRight(FunList.Nil) {
-  x, acc: FunList<T> -> acc.appendTail(x)
+fun <T> FunList<T>.reverseByFoldRight(): FunList<T> = foldRight(FunList.Nil) { x, acc: FunList<T> ->
+  acc.appendTail(x)
 }
 
-fun <T> FunList<T>.filterByFoldRight(p: (T) -> Boolean) = foldRight(FunList.Nil) {
-  x, acc: FunList<T> -> if (p(x)) acc.addHead(x) else acc
+fun <T> FunList<T>.filterByFoldRight(p: (T) -> Boolean) = foldRight(FunList.Nil) { x, acc: FunList<T> ->
+  if (p(x)) acc.addHead(x) else acc
 }
 
-fun <T, R> FunList<T>.mapByFoldRight(f: (T) -> R): FunList<R> = foldRight(FunList.Nil) {
-  x, acc: FunList<R> -> acc.addHead(f(x))
+fun <T, R> FunList<T>.mapByFoldRight(f: (T) -> R): FunList<R> = foldRight(FunList.Nil) { x, acc: FunList<R> ->
+  acc.addHead(f(x))
 }
 
-tailrec fun <T, R> FunList<T>.zip(other: FunList<R>, acc: FunList<Pair<T, R>> = FunList.Nil): FunList<Pair<T, R>> = when {
-  other is FunList.Nil || this is FunList.Nil -> acc.reverse()
-  else -> this.getTail().zip(other.getTail(), acc.addHead(this.getHead() to other.getHead()))
+tailrec fun <T, R> FunList<T>.zip(other: FunList<R>, acc: FunList<Pair<T, R>> = FunList.Nil): FunList<Pair<T, R>> =
+  when {
+    other is FunList.Nil || this is FunList.Nil -> acc.reverse()
+    else -> this.getTail().zip(other.getTail(), acc.addHead(this.getHead() to other.getHead()))
+  }
+
+tailrec fun <T1, T2, R> FunList<T1>.zipWith(
+  f: (T1, T2) -> R,
+  other: FunList<T2>,
+  acc: FunList<R> = FunList.Nil
+): FunList<R> = when {
+  this === FunList.Nil || other === FunList.Nil -> acc.reverse()
+  else -> getTail().zipWith(f, other.getTail(), acc.addHead(f(getHead(), other.getHead())))
 }
 
 fun main() {
-  val intList1 = funListOf(1, 3, 10)
-  val intList2 = funListOf(2, 4, 11, 15)
+  val intList1 = funListOf(1, 2, 3)
+  val intList2 = funListOf(1, 3, 10)
+  val lowerCharList = funListOf('a', 'b', 'c')
 
-  println("[${intList1.zip(intList2).mkString()}]")
+  println("[${intList1.zipWith({ x, y -> x + y }, intList2).mkString()}]")
+  println("[${intList1.zipWith({ x, y -> if (x > y) x else y }, intList2).mkString()}]")
+  println("[${intList1.zipWith({ x, y -> x to y }, lowerCharList).mkString()}]")
 }
