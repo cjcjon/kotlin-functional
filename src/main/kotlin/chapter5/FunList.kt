@@ -106,8 +106,12 @@ fun <T, R> FunList<T>.foldRight(acc: R, f: (T, R) -> R): R = when (this) {
   is FunList.Cons -> f(head, tail.foldRight(acc, f))
 }
 
+fun <T> FunList<T>.reverseByFoldRight(): FunList<T> = foldRight(FunList.Nil) {
+  x, acc: FunList<T> -> acc.appendTail(x)
+}
+
 fun main() {
   val intList = funListOf(1, 3, 10)
 
-  println(intList.foldRight(0) { x, acc -> x - acc })
+  println("[${intList.reverseByFoldRight().mkString()}]")
 }
