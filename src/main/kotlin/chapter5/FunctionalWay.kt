@@ -1,14 +1,19 @@
 package chapter5
 
 fun main() {
-  val bigIntList = (1..10000000).toList()
+  val bigIntList = (10000000 downTo 1).toList()
+
   val imperativeStart = System.currentTimeMillis()
   imperativeWay(bigIntList)
   println("${System.currentTimeMillis() - imperativeStart} ms")
 
   val functionalStart = System.currentTimeMillis()
-  realFunctionalWay(bigIntList)
+  functionalWay(bigIntList)
   println("${System.currentTimeMillis() - functionalStart} ms")
+
+  val realFunctionalStart = System.currentTimeMillis()
+  realFunctionalWay(bigIntList)
+  println("${System.currentTimeMillis() - realFunctionalStart} ms")
 }
 
 fun imperativeWay(intList: List<Int>): Int {
@@ -19,6 +24,12 @@ fun imperativeWay(intList: List<Int>): Int {
 
   throw NoSuchElementException("There is no value")
 }
+
+fun functionalWay(intList: List<Int>): Int =
+  intList
+    .map { n -> n * n }
+    .filter { n -> n < 10 }
+    .first()
 
 fun realFunctionalWay(intList: List<Int>): Int =
   intList.asSequence()
