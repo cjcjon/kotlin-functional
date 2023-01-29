@@ -6,6 +6,18 @@ sealed class FunList<out T> {
   data class Cons<out T>(val head: T, val tail: FunList<T>) : FunList<T>()
 }
 
+fun <T> FunList<T>.mkString(separator: String = ","): String {
+  tailrec fun innerAcc(cons: FunList<T>, acc: String): String = when (cons) {
+    is FunList.Nil -> acc
+    is FunList.Cons ->  innerAcc(
+      cons.tail,
+      if (acc.isEmpty()) cons.head.toString() else "${acc}${separator}${cons.head}"
+    )
+  }
+
+  return innerAcc(this, "")
+}
+
 fun <T> FunList<T>.addHead(head: T): FunList<T> = FunList.Cons(head, this)
 
 tailrec fun <T> FunList<T>.reverse(acc: FunList<T> = FunList.Nil): FunList<T> = when(this) {
@@ -29,19 +41,8 @@ fun <T> FunList<T>.getHead(): T = when (this) {
 }
 
 fun main() {
-  fun <T> printCons(cons: FunList<T>) {
-    tailrec fun <T> mkString(cons: FunList<T>, acc: String): String = when (cons) {
-      is FunList.Nil -> acc
-      is FunList.Cons -> mkString(
-        cons.tail,
-        if (acc.isEmpty()) cons.head.toString() else "${acc}, ${cons.head}"
-      )
-    }
-
-    println("[${mkString(cons, "")}]")
-  }
-
   val list = FunList.Cons(1, FunList.Cons(2, FunList.Nil))
-  printCons(list)
+
+  println("[${list.mkString()}]")
   println("head: ${list.getHead()}")
 }
