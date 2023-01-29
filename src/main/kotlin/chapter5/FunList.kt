@@ -58,10 +58,13 @@ tailrec fun <T> FunList<T>.dropWhile(p: (T) -> Boolean): FunList<T> = when {
   else -> this
 }
 
+tailrec fun <T> FunList<T>.take(n: Int, acc: FunList<T> = FunList.Nil): FunList<T> = when {
+  n > 0 && this is FunList.Cons -> tail.take(n - 1, acc.addHead(head))
+  else -> acc.reverse()
+}
+
 fun main() {
   val list = FunList.Cons(1, FunList.Cons(2, FunList.Cons(3, FunList.Cons(4, FunList.Nil))))
 
-  println("[${list.filter { it % 2 == 0 }.mkString()}]")
-  println("[${list.drop(3).mkString()}]")
-  println("[${list.dropWhile { it == 3 }.mkString()}]")
+  println("[${list.take(2).mkString()}]")
 }
