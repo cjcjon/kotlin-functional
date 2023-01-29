@@ -142,8 +142,14 @@ fun <T, K> FunList<T>.groupBy(f: (T) -> K): Map<K, FunList<T>> = foldLeft(mapOf(
   acc.plus(f(x) to (acc.getOrDefault(f(x), FunList.Nil).appendTail(x)))
 }
 
+tailrec fun <T> FunList<T>.toString(acc: String): String = when (this) {
+  is FunList.Nil -> "[${acc.drop(2)}]"
+  is FunList.Cons -> tail.toString("${acc}, ${head.toString()}")
+}
+
 fun main() {
   val intList = funListOf(1, 2, 3, 2)
 
-  println(intList.groupBy { "숫자${it}" })
+  println(intList.toString("") == "[1, 2, 3, 2]")
+  println(FunList.Nil.toString("") == "[]")
 }
