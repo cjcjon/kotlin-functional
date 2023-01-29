@@ -56,6 +56,15 @@ fun <T, R> FunStream<T>.map(f: (T) -> R): FunStream<R> = when (this) {
 fun <T> generateFunStream(seed: T, generate: (T) -> T): FunStream<T> =
   FunStream.Cons({ seed }, { generateFunStream(generate(seed), generate) })
 
+tailrec fun <T> FunStream<T>.forEach(f: (T) -> Unit): Unit = when (this) {
+  is FunStream.Nil -> Unit
+  is FunStream.Cons -> {
+    f(head())
+    tail().forEach(f)
+  }
+}
+
 fun main() {
-  println(funStreamOf(1, 2, 3).map { it * 2 } == funStreamOf(2, 4, 6))
+  val infiniteVal = generateFunStream(0) { it + 5 }
+  // infiniteVal.forEach { println(it) }
 }
