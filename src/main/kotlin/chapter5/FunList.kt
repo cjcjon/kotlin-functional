@@ -134,13 +134,16 @@ tailrec fun <T1, T2, R> FunList<T1>.zipWith(
   else -> getTail().zipWith(f, other.getTail(), acc.addHead(f(getHead(), other.getHead())))
 }
 
-fun <T, R> FunList<T>.associate(f: (T) -> Pair<T, R>): Map<T, R> = foldLeft(mapOf()) {
-  acc: Map<T, R>, x -> acc.plus(f(x))
+fun <T, R> FunList<T>.associate(f: (T) -> Pair<T, R>): Map<T, R> = foldLeft(mapOf()) { acc: Map<T, R>, x ->
+  acc.plus(f(x))
 }
 
+fun <T, K> FunList<T>.groupBy(f: (T) -> K): Map<K, FunList<T>> = foldLeft(mapOf()) { acc: Map<K, FunList<T>>, x ->
+  acc.plus(f(x) to (acc.getOrDefault(f(x), FunList.Nil).appendTail(x)))
+}
 
 fun main() {
-  val intList = funListOf(1, 2, 3)
+  val intList = funListOf(1, 2, 3, 2)
 
-  println("[${intList.associate { x -> x to x.toString() }}]")
+  println(intList.groupBy { "숫자${it}" })
 }
