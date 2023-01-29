@@ -114,6 +114,10 @@ fun <T> FunList<T>.filterByFoldRight(p: (T) -> Boolean) = foldRight(FunList.Nil)
   x, acc: FunList<T> -> if (p(x)) acc.addHead(x) else acc
 }
 
+fun <T, R> FunList<T>.mapByFoldRight(f: (T) -> R): FunList<R> = foldRight(FunList.Nil) {
+  x, acc: FunList<R> -> acc.addHead(f(x))
+}
+
 fun main() {
   val intList = funListOf(1, 3, 10)
 
