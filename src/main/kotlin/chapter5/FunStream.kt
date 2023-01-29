@@ -1,9 +1,18 @@
 package chapter5
 
 sealed class FunStream<out T> {
-  object Nil: FunStream<Nothing>()
+  object Nil : FunStream<Nothing>()
 
-  data class Cons<out T>(val head: () -> T, val tail: () -> FunStream<T>): FunStream<T>()
+  data class Cons<out T>(val head: () -> T, val tail: () -> FunStream<T>) : FunStream<T>() {
+    override fun equals(other: Any?): Boolean = when {
+      other is Cons<*> && head() == other.head() && tail() == other.tail() -> true
+      else -> false
+    }
+
+    override fun hashCode(): Int {
+      return 31 * head.hashCode() + tail.hashCode()
+    }
+  }
 }
 
 fun <T> FunStream<T>.getHead(): T = when (this) {
