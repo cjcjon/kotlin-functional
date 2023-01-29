@@ -21,6 +21,11 @@ fun FunStream<Int>.sum(): Int = when (this) {
   is FunStream.Cons -> head() + tail().sum()
 }
 
+fun FunStream<Int>.product(): Int = when (this) {
+  is FunStream.Nil -> 1
+  is FunStream.Cons -> head() * tail().product()
+}
+
 fun main() {
-  println(funStreamOf(1, 2, 3).sum())
+  println(funStreamOf(1, 2, 3, 4).product())
 }
