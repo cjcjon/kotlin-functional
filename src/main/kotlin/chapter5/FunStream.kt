@@ -16,7 +16,11 @@ fun <T> FunStream<T>.getTail(): FunStream<T> = when (this) {
   is FunStream.Cons -> tail()
 }
 
+fun FunStream<Int>.sum(): Int = when (this) {
+  is FunStream.Nil -> 0
+  is FunStream.Cons -> head() + tail().sum()
+}
+
 fun main() {
-  println(funStreamOf(1, 2, 3).getHead())
-  println(funStreamOf(1, 2, 3).getTail())
+  println(funStreamOf(1, 2, 3).sum())
 }
