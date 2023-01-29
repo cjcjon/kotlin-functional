@@ -85,6 +85,10 @@ tailrec fun <T, R> FunList<T>.foldLeft(acc: R, f: (R, T) -> R): R = when (this) 
 
 fun FunList<Int>.sum(): Int = foldLeft(0) { acc, x -> acc + x }
 
+fun toUpper(list: FunList<Char>): FunList<Char> = list.foldLeft(FunList.Nil) {
+  acc: FunList<Char>, char: Char -> acc.appendTail(char.uppercaseChar())
+}
+
 fun main() {
   val intList = funListOf(1, 2, 3)
 
