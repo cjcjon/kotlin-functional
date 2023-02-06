@@ -10,3 +10,9 @@ fun Tree<Int>.insert(elem: Int): Tree<Int> = when (this) {
     if (elem <= value) Node(value = value, left = left.insert(elem), right = right)
     else Node(value = value, left = left, right = right.insert(elem))
 }
+
+fun main() {
+  (1..100000).fold(EmptyTree as Tree<Int>) { acc, i ->
+    acc.insert(i)
+  }
+}
