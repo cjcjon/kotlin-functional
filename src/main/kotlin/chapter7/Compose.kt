@@ -27,4 +27,9 @@ fun main() {
   /* Either 펑터2법칙 성립 */
   println(Left("error").fmap(f compose g) == Left("error").fmap(g).fmap(f)) // true
   println(Right(5).fmap(f compose g) == Right(5).fmap(g).fmap(f)) // true
+
+  /* FunList 펑터2법칙 성립 */
+  val funList = FunList.Cons(5, FunList.Cons(6, FunList.Nil))
+  println(FunList.Nil.fmap(f compose g) == FunList.Nil.fmap(g).fmap(f)) // true
+  println(funList.fmap(f compose g) == funList.fmap(g).fmap(f)) // true
 }

@@ -12,7 +12,12 @@ fun main() {
   println(EmptyTree.fmap { identity(it) } == EmptyTree)
   println(tree.fmap { identity(it) } == tree)
 
-  // Either1 laws 성립
+  // Either 1 laws 성립
   println(Left("error").fmap { identity(it) } == Left("error"))
   println(Right(5).fmap { identity(it) } == Right(5))
+
+  // FunList 1 laws 성립
+  val funList = FunList.Cons(5, FunList.Cons(6, FunList.Nil))
+  println(FunList.Nil.fmap { identity(it) } == FunList.Nil)
+  println(funList.fmap { identity(it) } == funList)
 }
