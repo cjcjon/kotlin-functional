@@ -14,3 +14,5 @@ data class TreeNode<A>(val value: A, val forest: FunList<TreeNode<A>> = Nil) : T
     is Cons -> loop(list.tail, f, list.head.foldLeft(acc, f))
   }
 }
+
+fun <A> Tree<A>.contains(value: A) = foldMap({ it == value }, AnyMonoid())

@@ -20,6 +20,8 @@ data class Node<A>(
 
 object EmptyTree : BinaryTree<kotlin.Nothing>()
 
+fun <A> BinaryTree<A>.contains(value: A) = foldMap({ it == value }, AnyMonoid())
+
 fun main() {
   val tree = Node(1, Node(2, Node(3), Node(4)), Node(5, Node(6), Node(7)))
 
@@ -28,4 +30,9 @@ fun main() {
 
   println(tree.foldMap({ a -> a * 2 }, SumMonoid()))      // "56"
   println(tree.foldMap({ a -> a + 1 }, ProductMonoid()))  // "40320"
+
+  val tree2 = Node("a", Node("b", Node("c"), Node("d")), Node("e", Node("f"), Node("g")))
+
+  println(tree2.contains("c")) // "True"
+  println(tree2.contains("z")) // "False"
 }

@@ -11,6 +11,8 @@ object Nil : FunList<Nothing>()
 
 data class Cons<out T>(val head: T, val tail: FunList<T>) : FunList<T>()
 
+fun <A> FunList<A>.contains(value: A) = foldMap({ it == value }, AnyMonoid())
+
 fun main() {
 
   val list1 = Cons(1, Cons(2, Cons(3, Cons(4, Nil))))
