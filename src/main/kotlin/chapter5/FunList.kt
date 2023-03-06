@@ -20,6 +20,14 @@ fun <T> FunList<T>.mkString(separator: String = ","): String {
 
 fun <T> FunList<T>.addHead(head: T): FunList<T> = FunList.Cons(head, this)
 
+infix fun <T> FunList<T>.concat(value: FunList<T>): FunList<T> {
+  tailrec fun innerAppend(listA: FunList<T>, listB: FunList<T>): FunList<T> = when (listA) {
+    FunList.Nil -> listB
+    is FunList.Cons -> innerAppend(listA.tail, listB.addHead(listA.head))
+  }
+  return innerAppend(this.reverse(), value)
+}
+
 tailrec fun <T> FunList<T>.reverse(acc: FunList<T> = FunList.Nil): FunList<T> = when (this) {
   is FunList.Nil -> acc
   is FunList.Cons -> tail.reverse(acc.addHead(head))
