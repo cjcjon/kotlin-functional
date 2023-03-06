@@ -1,5 +1,7 @@
 package chapter9
 
+import chapter5.funListOf
+
 sealed class Tree<out A> : Foldable<A>
 
 data class TreeNode<A>(val value: A, val forest: FunList<TreeNode<A>> = Nil) : Tree<A>() {
@@ -16,3 +18,5 @@ data class TreeNode<A>(val value: A, val forest: FunList<TreeNode<A>> = Nil) : T
 }
 
 fun <A> Tree<A>.contains(value: A) = foldMap({ it == value }, AnyMonoid())
+
+fun <A> Tree<A>.toFunList(): chapter5.FunList<A> = foldMap({ funListOf(it) }, FunListMonoid())

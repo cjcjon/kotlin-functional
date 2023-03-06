@@ -1,5 +1,9 @@
 package chapter9
 
+import chapter5.FunList
+import chapter5.funListOf
+import chapter5.mkString
+
 sealed class BinaryTree<out A> : Foldable<A> {
 
   override fun <B> foldLeft(acc: B, f: (B, A) -> B): B = when (this) {
@@ -22,6 +26,8 @@ object EmptyTree : BinaryTree<kotlin.Nothing>()
 
 fun <A> BinaryTree<A>.contains(value: A) = foldMap({ it == value }, AnyMonoid())
 
+fun <A> BinaryTree<A>.toFunList(): FunList<A> = foldMap({ funListOf(it) }, FunListMonoid())
+
 fun main() {
   val tree = Node(1, Node(2, Node(3), Node(4)), Node(5, Node(6), Node(7)))
 
@@ -35,4 +41,8 @@ fun main() {
 
   println(tree2.contains("c")) // "True"
   println(tree2.contains("z")) // "False"
+
+  val tree3 = Node("a", Node("b", Node("c"), Node("d")), Node("e", Node("f"), Node("g")))
+
+  println(tree3.toFunList().mkString(",")) // "[c, b, d, a, f, e, g]"
 }
