@@ -18,3 +18,21 @@ object MaybeMonoid {
     }
   }
 }
+
+fun main() {
+  val x = Just(1)
+  val y = Just(2)
+  val z = Just(3)
+
+  MaybeMonoid.monoid(ProductMonoid()).run {
+    println(mappend(mempty(), x) == x)                              // "true"
+    println(mappend(x, mempty()) == x)                              // "true"
+    println(mappend(mappend(x, y), z) == mappend(x, mappend(y, z))) // "true"
+  }
+
+  MaybeMonoid.monoid(SumMonoid()).run {
+    println(mappend(mempty(), x) == x)                              // "true"
+    println(mappend(x, mempty()) == x)                              // "true"
+    println(mappend(mappend(x, y), z) == mappend(x, mappend(y, z))) // "true"
+  }
+}
